@@ -14,13 +14,11 @@ struct EscolhaForm {
     filme: String,
 }
 
-// Página inicial (cadastro)
 #[get("/")]
 async fn index() -> impl Responder {
     NamedFile::open_async("static/cadastro.html").await
 }
 
-// Recebe dados do cadastro e redireciona para escolha de filme
 #[post("/cadastro")]
 async fn cadastro(form: web::Form<FormData>) -> impl Responder {
     println!("Novo cadastro:");
@@ -33,31 +31,26 @@ async fn cadastro(form: web::Form<FormData>) -> impl Responder {
         .finish()
 }
 
-// Página de escolha de filme
 #[get("/escolher")]
 async fn escolher() -> impl Responder {
     NamedFile::open_async("static/escolher.html").await
 }
 
-// Recebe filme escolhido e redireciona para pagamento
 #[post("/pagamento")]
 async fn pagamento(info: web::Form<EscolhaForm>) -> impl Responder {
     println!("Filme escolhido: {}", info.filme);
 
-    // Aqui você poderia guardar essa escolha numa sessão ou banco de dados
 
     HttpResponse::Found()
         .append_header(("Location", "/pagamento_tela"))
         .finish()
 }
 
-// Página de pagamento
 #[get("/pagamento_tela")]
 async fn pagamento_tela() -> impl Responder {
     NamedFile::open_async("static/pagamento.html").await
 }
 
-// Simula o fim do pagamento e libera acesso ao filme
 #[post("/finalizar_pagamento")]
 async fn finalizar_pagamento() -> impl Responder {
     println!("Pagamento efetuado com sucesso.");
@@ -67,7 +60,6 @@ async fn finalizar_pagamento() -> impl Responder {
         .finish()
 }
 
-// Página para assistir ao filme
 #[get("/assistir")]
 async fn assistir() -> impl Responder {
     NamedFile::open_async("static/assistir.html").await
