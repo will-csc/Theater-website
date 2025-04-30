@@ -21,8 +21,24 @@ async fn index() -> impl Responder {
 
 #[post("/cadastro")]
 async fn cadastro(form: web::Form<FormData>) -> impl Responder {
-    println!("Novo cadastro:");
     println!("Nome: {:?}", form.nome);
+    println!("Email: {}", form.email);
+    println!("Senha: {}", form.senha);
+    println!("Confirme a senha: {}", form.senha);
+
+
+    HttpResponse::Found()
+        .append_header(("Location", "/login"))
+        .finish()
+}
+
+#[get("/")]
+async fn login() -> impl Responder {
+    NamedFile::open_async("static/login.html").await
+}
+
+#[post("/login")]
+async fn login_user(form: web::Form<FormData>) -> impl Responder {
     println!("Email: {}", form.email);
     println!("Senha: {}", form.senha);
 
@@ -42,11 +58,11 @@ async fn pagamento(info: web::Form<EscolhaForm>) -> impl Responder {
 
 
     HttpResponse::Found()
-        .append_header(("Location", "/pagamento_tela"))
+        .append_header(("Location", "/pagamento"))
         .finish()
 }
 
-#[get("/pagamento_tela")]
+#[get("/pagamento")]
 async fn pagamento_tela() -> impl Responder {
     NamedFile::open_async("static/pagamento.html").await
 }
