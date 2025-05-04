@@ -104,16 +104,52 @@
     </style>
 </head>
 <body>
-  
-    <div class="card">
-      <h1>Login</h1>
-        <form onsubmit="event.preventDefault(); window.location.href='escolher.html';">
-          <input type="email" name="email" placeholder="Email" required><br>
-          <input type="password" name="senha" placeholder="Senha" required><br>
-          <button type="submit">Entrar</button>
-      </form>
+  <img src="static/img/fundo.png" class="img-login" alt="fundo">
+  <div class="card">
+    <h1>Login</h1>
+    <form id="formLogin">
+      <input type="email" name="email" id="email" placeholder="Email" required><br>
+      <input type="password" name="senha" id="senha" placeholder="Senha" required><br>
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="mensagem-erro" style="color: red; display: none;"></p>
   </div>
+
+  <script>
+    const form = document.getElementById('formLogin'); // Ajuste para id correto
+    const email = document.getElementById('email');
+    const senha = document.getElementById('senha');
+    const mensagemErro = document.getElementById('mensagem-erro'); // Ajuste para id correto
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault(); // Previne o envio do formulário padrão
+
+      // Limpa qualquer erro anterior
+      mensagemErro.style.display = "none";
+      mensagemErro.textContent = "";
+
+      try {
+        const response = await fetch(`/verifica_login?email=${encodeURIComponent(email.value)}&senha=${encodeURIComponent(senha.value)}`);
+        const status = await response.text();
+
+        if (status === "ok") {
+          window.location.href = "/escolher"; // Redireciona se login for válido
+        } else if (status === "invalido") {
+          mensagemErro.textContent = "Email ou senha inválidos."; // Exibe a mensagem de erro
+          mensagemErro.style.display = "block"; // Torna o erro visível
+        } else {
+          mensagemErro.textContent = "Erro ao tentar logar.";
+          mensagemErro.style.display = "block";
+        }
+      } catch (error) {
+        console.log(error);
+        mensagemErro.textContent = "Erro de conexão com o servidor.";
+        mensagemErro.style.display = "block"; // Torna a mensagem de erro visível
+      }
+    });
+  </script>
 </body>
+
 
 </html> 
 
