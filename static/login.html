@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+          }
+          
+          .img-login {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+           object-fit: cover;
+            z-index: -1; 
+          }
+
+          body {
+            background: url('static/img/fundo.png') no-repeat center center fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: #f1f1f1;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+          }
+          
+          .info {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+          }
+          
+          .info strong {
+            color: #FFD700;
+          }
+          
+          .card {
+            background-color: rgba(126, 112, 112, 0.2);
+            border-radius: 15px; 
+            padding: 80px 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(8px); 
+          }
+          
+          h1 {
+            color: #4648bb;
+            font-size: 36px;
+            margin-bottom: 20px;
+          }
+          
+          input[type="text"],
+          input[type="email"],
+          input[type="password"] {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background-color: #333;
+            color: #fff;
+            font-size: 16px;
+          }
+          
+          input[type="text"]:focus,
+          input[type="email"]:focus,
+          input[type="password"]:focus {
+            border-color: #007BFF;
+            outline: none;
+          }
+          
+          button {
+            width: 200px;
+            padding: 10px;
+            margin-top: 30px;
+            border: none;
+            border-radius: 10px;
+            background-color: #4648bb;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+         .btn-voltar {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn-voltar:hover {
+      background-color: #0056b3;
+    }
+    </style>
+</head>
+<body>
+  <button class="btn-voltar" onclick="window.history.back();">← Voltar</button>
+  <div class="card">
+    <h1>Login</h1>
+    <form id="formLogin">
+      <input type="email" name="email" id="email" placeholder="Email" required><br>
+      <input type="password" name="senha" id="senha" placeholder="Senha" required><br>
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="mensagem-erro" style="color: red; display: none;"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('formLogin'); // Ajuste para id correto
+    const email = document.getElementById('email');
+    const senha = document.getElementById('senha');
+    const mensagemErro = document.getElementById('mensagem-erro'); // Ajuste para id correto
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault(); // Previne o envio do formulário padrão
+
+      // Limpa qualquer erro anterior
+      mensagemErro.style.display = "none";
+      mensagemErro.textContent = "";
+
+      try {
+        const response = await fetch(`/verifica_login?email=${encodeURIComponent(email.value)}&senha=${encodeURIComponent(senha.value)}`);
+        const status = await response.text();
+
+        if (status === "ok") {
+          localStorage.setItem("email", email.value);
+          window.location.href = "/escolher";
+        }else if (status === "invalido") {
+          mensagemErro.textContent = "Email ou senha inválidos."; // Exibe a mensagem de erro
+          mensagemErro.style.display = "block"; // Torna o erro visível
+        }
+      } catch (error) {
+        mensagemErro.textContent = "Erro de conexão com o servidor.";
+        mensagemErro.style.display = "block"; // Torna a mensagem de erro visível
+      }
+    });
+  </script>
+</body>
+
+
+</html> 
+
+
+
+

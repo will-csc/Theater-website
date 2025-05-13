@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Escolher Filme</title>
+  <style>
+    body {
+      background: url('static/img/fundo.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      max-width: 1200px;
+      margin: 50px auto;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    button {
+      background-color: #4648bb;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+         .btn-perfil {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn-perfil:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn-perfil" onclick="window.location.href='/usuario'">Configurações do Perfil</button>
+  <h1>Escolha um Filme</h1>
+  <div class="container" id="filmes-container"></div>
+
+  <script>
+    const filmes = [
+      { nome: "Avatar 2", valor: "R$ 19,90", link: "https://www.youtube.com/embed/a8Gx8wiNbs8", img: "static/img/avatar.png" },
+      { nome: "Ratatouille", valor: "R$ 16,90", link: "https://www.youtube.com/embed/NgsQ8mVkN8w", img: "static/img/ratatouille.jpg" },
+      { nome: "As Branquelas", valor: "R$ 17,90", link: "https://www.youtube.com/embed/aeVkbNka9HM", img: "static/img/asbranquelas.jpg"},
+      { nome: "TED", valor: "R$ 15,90", link: "https://www.youtube.com/embed/znssIpxQVa4", img: "static/img/ted.jpg" },
+      { nome: "Velozes e Furiosos", valor: "R$ 14,90", link: "https://www.youtube.com/embed/1fvzVMmARqY", img: "static/img/velozes.jpeg"},
+      { nome: "Karate Kid", valor: "R$ 17,90", link: "https://www.youtube.com/embed/r_pmiLzahuo", img: "static/img/karatekid.jpg"},
+      { nome: "Rush Hours", valor: "R$ 15,90", link: "https://www.youtube.com/embed/xexHt3gKw78", img: "static/img/horadorush.jpg"},
+      { nome: "A era do gelo", valor: "R$ 18,90", link: "https://www.youtube.com/embed/EPAA25T-s8w", img: "static/img/ice_age.jpg"},
+      { nome: "Bad Boys", valor: "R$ 14,90", link: "https://www.youtube.com/embed/81_YSLDSuMI", img: "static/img/bad.png"},
+      { nome: "Cidade de Deus", valor: "R$ 24,90", link: "https://www.youtube.com/embed/Rdn62Gx3kVk", img: "static/img/cidade-de-deus.png"}
+      
+    ];
+
+    const container = document.getElementById("filmes-container");
+
+    filmes.forEach(filme => {
+      container.innerHTML += `
+        <div class="card">
+          <img src="${filme.img}" alt="${filme.nome}">
+          <h3>${filme.nome}</h3>
+          <p>${filme.valor}</p>
+          <button onclick="selecionarFilme('${filme.nome}', '${filme.valor}', '${filme.link}')">Selecionar</button>
+        </div>
+      `;
+    });
+
+    function selecionarFilme(nome, valor, link) {
+      localStorage.setItem("filmeSelecionado", nome);
+      localStorage.setItem("valorFilme", valor);
+      localStorage.setItem("linkFilme", link);
+      window.location.href = "pagamento";
+    }
+
+  </script>
+
+  <script>
+    window.onload = function() {
+      const email = localStorage.getItem("email");
+      if (email) {
+        console.log("Email armazenado:", email);
+      } else {
+        console.log("Nenhum email.");
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+
